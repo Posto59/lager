@@ -49,7 +49,11 @@ button { cursor: pointer; }
 .hero { padding-top: 14px; display: flex; flex-direction: column; gap: 14px; }
 h1 { font-family: var(--font-display); font-weight: 700; font-size: 40px; line-height: 1; letter-spacing: -.02em; margin: 0; text-wrap: balance; }
 h1 small { display: block; font-size: 14px; font-weight: 500; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 6px; }
-.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.stat.wide { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+.stat.wide > div { min-width: 0; }
+.stat.wide .ar { text-align: right; margin-left: auto; }
+.area { color: var(--muted); font-size: 15px; font-variant-numeric: tabular-nums; }
 .stat { background: var(--surface); border-radius: 16px; padding: 10px 12px; min-width: 0; }
 .stat b { display: block; font-family: var(--font-display); font-size: 26px; font-weight: 600; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .stat span { font-size: 12px; color: var(--muted); }
@@ -177,7 +181,7 @@ footer { margin-top: 20px; color: var(--muted); font-size: 12.5px; display: flex
       <div class="stat"><b id="sCans">0</b><span>Dosen</span></div>
       <div class="stat"><b id="sColors">0</b><span>Farben</span></div>
       <div class="stat"><b id="sFull">0</b><span>voll</span></div>
-      <div class="stat"><b id="sEq">0</b><span>Inhalt</span></div>
+      <div class="stat wide"><div><b id="sEq">0</b><span>Dosen Inhalt gesamt</span></div><div class="ar"><b id="sArea">0 m²</b><span>reicht für ca. Fläche</span></div></div>
     </div>
   </div>
 
@@ -210,6 +214,7 @@ footer { margin-top: 20px; color: var(--muted); font-size: 12.5px; display: flex
 
   <footer>
     <span id="storeNote">Lädt …</span>
+    <span>Fläche: ca. 1,5–2 m² pro volle 400-ml-Dose (Händlerangabe), je nach Untergrund und Schichtdicke.</span>
     <span>Tipp: Farbe nach links wischen entfernt die leerste Dose. Farbtöne sind Näherungen.</span>
   </footer>
 </div>
@@ -238,6 +243,7 @@ footer { margin-top: 20px; color: var(--muted); font-size: 12.5px; display: flex
     <div class="read">
       <div class="p"><span id="pct">100</span><sup>%</sup></div>
       <div class="l" id="plabel">Voll</div>
+      <div class="area" id="parea"></div>
       <div class="step"><button type="button" id="minus" aria-label="5 Prozent weniger">−5</button><button type="button" id="plus" aria-label="5 Prozent mehr">+5</button></div>
     </div>
   </div>
@@ -320,6 +326,14 @@ footer { margin-top: 20px; color: var(--muted); font-size: 12.5px; display: flex
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function $(id) { return document.getElementById(id); }
   function pl(l) { return l === 100 ? "Voll" : l + "%"; }
+  var M2_LO = 1.5, M2_HI = 2;
+  function area(pct) {
+    var lo = pct / 100 * M2_LO, hi = pct / 100 * M2_HI;
+    var dec = hi < 1 ? 2 : 1;
+    var f = function (v) { return v.toLocaleString("de-DE", { minimumFractionDigits: dec, maximumFractionDigits: dec }); };
+    var a = f(lo), b = f(hi);
+    return a === b ? "ca. " + a + " m²" : "ca. " + a + "–" + b + " m²";
+  }
   function nice(l) {
     var m = { 100: "Voll", 75: "¾ voll", 50: "Halb voll", 25: "¼ voll" };
     if (m[l]) return m[l];
@@ -360,6 +374,7 @@ footer { margin-top: 20px; color: var(--muted); font-size: 12.5px; display: flex
     });
     $("sCans").textContent = cans; $("sColors").textContent = colors; $("sFull").textContent = full;
     $("sEq").textContent = (eq / 100).toLocaleString("de-DE", { maximumFractionDigits: 1 });
+    $("sArea").textContent = eq ? area(eq).replace("ca. ", "") : "0 m²";
   }
 
   function famsBar() {
@@ -446,6 +461,7 @@ footer { margin-top: 20px; color: var(--muted); font-size: 12.5px; display: flex
     liq.setAttribute("y", BOT - h); liq.setAttribute("height", h + 4);
     $("pct").textContent = sh.level;
     $("plabel").textContent = nice(sh.level);
+    $("parea").textContent = sh.level ? area(sh.level) : "";
     var pr = $("presets").children;
     for (var i = 0; i < pr.length; i++) pr[i].setAttribute("aria-pressed", +pr[i].dataset.lv === sh.level);
     var cta = $("cta"); if (cta) cta.disabled = sh.mode === "add" && (!sh.id || sh.level < 1);
