@@ -87,7 +87,7 @@ h1 small { display: block; font-size: 14px; font-weight: 500; color: var(--muted
 .nm .code { font-family: var(--font-display); font-weight: 600; font-size: 19px; line-height: 1.1; }
 .nm .name { color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
 .cans { display: flex; gap: 4px; align-items: flex-end; flex: none; }
-.can { position: relative; width: 14px; height: 26px; border-radius: 4px 4px 3px 3px; box-shadow: inset 0 0 0 1.5px var(--fg); background: linear-gradient(to top, var(--c) var(--l), var(--surface-2) var(--l)); margin-top: 5px; flex: none; overflow: visible; }
+.can { position: relative; width: 14px; height: 26px; border-radius: 4px 4px 3px 3px; box-shadow: inset 0 0 0 1.5px var(--fg); background: linear-gradient(to top, var(--c) var(--l), rgba(255, 255, 255, .4) var(--l)); margin-top: 5px; flex: none; overflow: visible; }
 .can::before { content: ""; position: absolute; left: 3px; right: 3px; top: -5px; height: 4px; background: var(--fg); border-radius: 2px; }
 .cnt { font-family: var(--font-display); font-size: 26px; font-weight: 600; min-width: 24px; text-align: right; font-variant-numeric: tabular-nums; }
 .cnt.zero { color: var(--line); }
@@ -134,7 +134,9 @@ footer { margin-top: 20px; color: var(--muted); font-size: 12.5px; display: flex
 .stage { display: flex; align-items: center; justify-content: center; gap: 26px; padding-block: 4px; }
 .hit { touch-action: none; user-select: none; -webkit-user-select: none; cursor: ns-resize; }
 .big { height: clamp(190px, 33vh, 300px); aspect-ratio: 160 / 300; display: block; overflow: visible; }
-.c-bg { fill: var(--surface-2); }
+.c-bg { fill: #fff; fill-opacity: .4; }
+.chip.tint { gap: 8px; }
+.chip.tint input { width: 28px; height: 28px; border: 0; padding: 0; background: none; border-radius: 6px; }
 .c-line { fill: none; stroke: var(--fg); stroke-width: 4; }
 .c-cap { fill: var(--fg); }
 .c-glint { fill: #fff; opacity: .22; }
@@ -215,7 +217,7 @@ footer { margin-top: 20px; color: var(--muted); font-size: 12.5px; display: flex
   <footer>
     <span id="storeNote">Lädt …</span>
     <span>Fläche: ca. 1,5–2 m² pro volle 400-ml-Dose (Händlerangabe), je nach Untergrund und Schichtdicke.</span>
-    <span>Tipp: Farbe nach links wischen entfernt die leerste Dose. Farbtöne sind Näherungen.</span>
+    <span>Tipp: Farbe nach links wischen entfernt die leerste Dose. Farbtöne sind Näherungen. Falscher Farbton? Farbe antippen und „Farbton“ ändern.</span>
   </footer>
 </div>
 
@@ -266,22 +268,193 @@ footer { margin-top: 20px; color: var(--muted); font-size: 12.5px; display: flex
     ["S", "Grau", "#8a9094"], ["W", "Schwarz & Weiß", "#141414"], ["X", "Power, Infra, True, Chrome", "#ff2a9a"]
   ];
   var PRESETS = [[100, "Voll", ""], [75, "¾", "voll"], [50, "½", "voll"], [25, "¼", "voll"], [10, "Rest", ""]];
-  var RAW = [
-    "Y|1005|Smash137's Potato|#e3c98a","Y|1010|Easter Yellow|#f5e56b","Y|1025|Kicking Yellow|#f2d13a","Y|1030|Yellow|#f7c800","Y|1045|Melon Yellow|#f6b81c","Y|1050|Topaz|#e29a1a",
-    "N|1060|Hazle|#c98a3c","N|1070|Pecan Nut|#a8652a","N|1080|Maroon|#7a2a20",
-    "O|1110|Indian Spice|#c0541f","O|1120|Masala|#b9421d","O|1130|Delhi|#a63a1a","O|1140|Bombay|#8f3a22","O|2060|Juice|#f08a1c","O|2070|Clockwork Orange|#ee6a12","O|2075|Pure Orange|#f26a00","O|2085|Halloween|#e8530c","O|8230|Koi|#d86a2a",
-    "R|2093|Code Red|#d42a1c","R|2110|Tomorrow|#e03a2e","R|2120|Atom's Megablast|#d9344a","R|3020|Fire Rose|#e2445a","R|3062|Cardinal|#b3182b","R|3065|Merlot|#7d1a2e","R|3070|Cherry|#c01c3a","R|3080|Winegum|#a8244a","R|3220|Mr. Crab|#e8503a","R|3330|Bloody Mary|#b8202c",
-    "P|3100|Miss Piggy|#f0a0b8","P|3120|Pink Cadillac|#e95f9a","P|3130|Pink Panther|#ef7fb0","P|3145|Punk Pink|#e0338c","P|3148|Beast|#c0287a","P|3150|Freak|#c32a8e","P|3200|Cocktail|#e8647a","P|3240|Sushi|#f27a6a","P|3305|Patpong|#d83a6a","P|3310|Pink Lemonade|#f4a8b0","P|3320|Lollipop|#ef6d9a","P|3995|Bubble Bath|#f0c8dc",
-    "V|3155|Purple Rain|#8e2a8a","V|3160|Good Times|#b04aa0","V|3170|Imperator|#7a2a78","V|3920|Illusion|#cdb4d8","V|3940|Magic|#b896cf","V|4000|Ms. Jackson|#c04a9c","V|4020|Monster|#6a2c8a","V|4040|Pimp Violet|#7a2e9c","V|4060|Galaxy|#3f2a78","V|4115|Lavender|#b59ad6","V|4130|Blue Velvet|#4a3a8e","V|4155|Royal Purple|#5a2e8a","V|4160|Wizard|#5a3a8a","V|4182|Universe|#3a2a6a","V|4210|Gut|#8a5a7a","V|4230|Kidney|#6a2a4a","V|4250|Liver|#5a2a3a","V|4260|Dummy|#a07a8a","V|4280|Plum|#5a2048","V|4290|Amethyst|#8a4aa8","V|4310|Edelgard|#b080b8","V|4320|Brunhilde|#9060a0","V|4330|Waltraut|#7a4a98","V|4340|Irmgard|#a070b0",
-    "B|5020|Baby Blue|#a8d0ee","B|5030|Light Blue|#5aa6dc","B|5070|Horizon|#2e7fc4","B|5077|Royal Blue|#1e4fae","B|5080|Ultramarine|#1a3a9a","B|5092|Dark Indigo|#1a2a60","B|5125|Dove|#9ab0c8","B|5140|Seal|#4a6078","B|5160|Space|#1e3050","B|5180|Trout|#5a7a98","B|5185|Marlin|#2a6a90","B|5190|Whale|#2a4a68","B|5200|Ice Blue|#bfe0f0","B|5210|Lenor|#8ec8e8","B|5230|Blue Lagoon|#1fa0c0","B|5250|Knock Out Blue|#2a8ad0","B|5270|Sorrento Blue|#3aa8d8","B|6130|Cool Cologne|#8ad8d0","B|6150|Mermaid|#3ac0b0","B|6170|Neptune|#1a8a9a","B|6175|Riffs|#4aa8a0","B|6180|Drops|#a8e0e0","B|6190|Nappies|#bfe8e0",
-    "G|6000|Pistachio|#b8d880","G|6005|Acid|#c8e040","G|6010|Slimer|#7ad020","G|6012|Oasis|#4ab87a","G|6013|Spring|#8ad860","G|6015|Wild Lime|#a8e02a","G|6045|Irish Green|#1e9a4a","G|6055|Boston|#1a7a4a","G|6060|Celtic|#1a6a3a","G|6065|Banknote|#6aa070","G|6070|TAG Green|#2ab86a","G|6075|Hippie|#6ac890","G|6090|Woodstock|#3a8a5a","G|6095|Plant|#2a7a3a","G|6195|Surgery|#8ad0b8","G|6210|E2E Green|#3aa84a","G|6220|Revolt Green|#2a8a3a","G|6240|Atlantis|#1a8a6a","G|6310|Olymp|#3a7a5a","G|6320|Hope|#5a9a6a","G|6330|Patina|#7ab0a0","G|6340|Copper Green|#4a8a78","G|6410|Trabi|#8aa87a","G|6420|Beetle|#5a7a4a","G|6430|Reseda|#6a8a5a","G|6625|Boa|#6a7a3a","G|6630|Pan|#7a8a3a","G|6710|Pear Green|#b0c840","G|6720|Lost Island|#7ab050","G|6725|Troops|#6a7a4a","G|6730|Toad|#5a8a2a",
-    "N|6610|Bamboo|#c8c07a","N|6620|Hemp|#9a9a5a","N|6905|Face|#d0a888","N|6910|Hannibal|#6a6a4a","N|6920|Murdock|#8a7a58","N|8000|Ivory|#ece6d0","N|8010|Sand|#d8c8a0","N|8020|Beige|#cdb78a","N|8030|Skin|#e8c4a8","N|8040|Cremino|#d8b890","N|8050|Frappé|#b89870","N|8060|Chocolate|#5a3a28","N|8070|Jawa|#8a6a48","N|8080|Rust|#a8481f","N|8110|Arabian|#b88a4a","N|8120|Gobi|#c8a468","N|8130|Syrian|#a87a44","N|8210|After|#7a5a3a","N|8220|Snail|#98785a","N|8240|Falling|#9a5a2a","N|8250|Candy Bar|#6a3a22","N|8260|Mud|#4a3322",
-    "S|6510|Fog|#b8c0b8","S|6520|Mist|#98a8a0","S|6530|Storm|#6a7a7a","S|6930|B.A. Bosko|#3a3a38","S|7010|Jaws|#b0b4b8","S|7030|Mouse|#8a9094","S|7050|Shark|#5a6064","S|7070|Rhino|#3a4044","S|7080|Ant|#28282a","S|7110|Gambetta|#a8a098","S|7120|Lennox|#8a8278","S|7130|Lambrate|#6a645c","S|7140|Industriilor|#4a4640","S|7210|Houdini|#b8b0a8","S|7220|Morpheus|#8a8484","S|7230|Nostradamus|#5a5456","S|7320|Ghetto|#686868","S|7340|Dumbo|#9a9aa0","S|7360|Slate|#4a5058",
-    "W|9001|Black|#141414","W|9100|Snow White|#fafafa","W|9105|White|#eeeeee",
-    "X|P1000|Power Yellow|#ffe600","X|P2000|Power Orange|#ff7a00","X|P3000|Power Red|#ff1a1a","X|P4000|Power Pink|#ff2a9a","X|P4100|Power Violet|#9a2aff","X|P5000|Power Blue|#1a6aff","X|P6000|Power Green|#1aff4a",
-    "X|IN1000|Infra Yellow|#fff04a","X|IN2000|Infra Orange|#ff9a2a","X|IN3000|Infra Red|#ff4a4a","X|IN4000|Infra Pink|#ff7ac8","X|IN4500|Infra Violet|#b87aff","X|IN6000|Infra Green|#7aff7a",
-    "X|TR1000|True Yellow|#ffee00","X|TR1010|50% Tr. Yellow|#fff59a","X|TR4000|True Magenta|#e6007e","X|TR4010|50% Tr. Magenta|#f280be","X|TR5000|True Cyan|#00a8e8","X|TR5010|50% Tr. Cyan|#80d4f4",
-    "X||Gold Chrome|#d8b04a","X||Copper Chrome|#b8703c","X||Silver Chrome|#c4c8cc","X||Outline Silver|#aab0b6","X||Silver Tiffany|#9fb8b8"];
+  var RAW = ["Y|1005|Smash137's Potato|#e3c98a",
+    "Y|1010|Easter Yellow|#f5e56b",
+    "Y|1025|Kicking Yellow|#f2d13a",
+    "Y|1030|Yellow|#f7c800",
+    "Y|1045|Melon Yellow|#f6b81c",
+    "Y|1050|Topaz|#e29a1a",
+    "N|1060|Hazle|#c98a3c",
+    "N|1070|Pecan Nut|#a8652a",
+    "N|1080|Maroon|#7a2a20",
+    "O|1110|Indian Spice|#c0541f",
+    "O|1120|Masala|#b9421d",
+    "O|1130|Delhi|#a63a1a",
+    "O|1140|Bombay|#8f3a22",
+    "O|2060|Juice|#f08a1c",
+    "O|2070|Clockwork Orange|#ee6a12",
+    "O|2075|Pure Orange|#f26a00",
+    "O|2085|Halloween|#e8530c",
+    "O|8230|Koi|#d86a2a",
+    "R|2093|Code Red|#d42a1c",
+    "R|2110|Tomorrow|#e03a2e",
+    "R|2120|Atom's Megablast|#d9344a",
+    "R|3020|Fire Rose|#e2445a",
+    "R|3062|Cardinal|#b3182b",
+    "R|3065|Merlot|#7d1a2e",
+    "R|3070|Cherry|#c01c3a",
+    "R|3080|Winegum|#a8244a",
+    "R|3220|Mr. Crab|#e8503a",
+    "R|3330|Bloody Mary|#b8202c",
+    "P|3100|Miss Piggy|#f0a0b8",
+    "P|3120|Pink Cadillac|#e95f9a",
+    "P|3130|Pink Panther|#ef7fb0",
+    "P|3145|Punk Pink|#e0338c",
+    "P|3148|Beast|#c0287a",
+    "P|3150|Freak|#c32a8e",
+    "P|3200|Cocktail|#e8647a",
+    "P|3240|Sushi|#f27a6a",
+    "P|3305|Patpong|#d83a6a",
+    "P|3310|Pink Lemonade|#f4a8b0",
+    "P|3320|Lollipop|#ef6d9a",
+    "P|3995|Bubble Bath|#f0c8dc",
+    "V|3155|Purple Rain|#8e2a8a",
+    "V|3160|Good Times|#b04aa0",
+    "V|3170|Imperator|#7a2a78",
+    "V|3920|Illusion|#cdb4d8",
+    "V|3940|Magic|#b896cf",
+    "V|4000|Ms. Jackson|#c04a9c",
+    "V|4020|Monster|#6a2c8a",
+    "V|4040|Pimp Violet|#7a2e9c",
+    "V|4060|Galaxy|#3f2a78",
+    "V|4115|Lavender|#b59ad6",
+    "V|4130|Blue Velvet|#4a3a8e",
+    "V|4155|Royal Purple|#5a2e8a",
+    "V|4160|Wizard|#5a3a8a",
+    "V|4182|Universe|#3a2a6a",
+    "V|4210|Gut|#8a5a7a",
+    "V|4230|Kidney|#6a2a4a",
+    "V|4250|Liver|#5a2a3a",
+    "V|4260|Dummy|#a07a8a",
+    "V|4280|Plum|#5a2048",
+    "V|4290|Amethyst|#8a4aa8",
+    "V|4310|Edelgard|#b080b8",
+    "V|4320|Brunhilde|#9060a0",
+    "V|4330|Waltraut|#7a4a98",
+    "V|4340|Irmgard|#a070b0",
+    "B|5020|Baby Blue|#a8d0ee",
+    "B|5030|Light Blue|#5aa6dc",
+    "B|5070|Horizon|#2e7fc4",
+    "B|5077|Royal Blue|#1e4fae",
+    "B|5080|Ultramarine|#1a3a9a",
+    "B|5092|Dark Indigo|#1a2a60",
+    "B|5125|Dove|#9ab0c8",
+    "B|5140|Seal|#4a6078",
+    "B|5160|Space|#1e3050",
+    "B|5180|Trout|#5a7a98",
+    "B|5185|Marlin|#2a6a90",
+    "B|5190|Whale|#2a4a68",
+    "B|5200|Ice Blue|#bfe0f0",
+    "B|5210|Lenor|#8ec8e8",
+    "B|5230|Blue Lagoon|#1fa0c0",
+    "B|5250|Knock Out Blue|#2a8ad0",
+    "B|5270|Sorrento Blue|#3aa8d8",
+    "B|6130|Cool Cologne|#8ad8d0",
+    "B|6150|Mermaid|#3ac0b0",
+    "B|6170|Neptune|#1a8a9a",
+    "B|6175|Riffs|#4aa8a0",
+    "B|6180|Drops|#a8e0e0",
+    "B|6190|Nappies|#bfe8e0",
+    "G|6000|Pistachio|#b8d880",
+    "G|6005|Acid|#c8e040",
+    "G|6010|Slimer|#7ad020",
+    "G|6012|Oasis|#4ab87a",
+    "G|6013|Spring|#8ad860",
+    "G|6015|Wild Lime|#a8e02a",
+    "G|6045|Irish Green|#1e9a4a",
+    "G|6055|Boston|#1a7a4a",
+    "G|6060|Celtic|#1a6a3a",
+    "G|6065|Banknote|#6aa070",
+    "G|6070|TAG Green|#2ab86a",
+    "G|6075|Hippie|#6ac890",
+    "G|6090|Woodstock|#3a8a5a",
+    "G|6095|Plant|#2a7a3a",
+    "G|6195|Surgery|#8ad0b8",
+    "G|6210|E2E Green|#3aa84a",
+    "G|6220|Revolt Green|#2a8a3a",
+    "G|6240|Atlantis|#1a8a6a",
+    "G|6310|Olymp|#3a7a5a",
+    "G|6320|Hope|#5a9a6a",
+    "G|6330|Patina|#7ab0a0",
+    "G|6340|Copper Green|#4a8a78",
+    "G|6410|Trabi|#8aa87a",
+    "G|6420|Beetle|#5a7a4a",
+    "G|6430|Reseda|#6a8a5a",
+    "G|6625|Boa|#6a7a3a",
+    "G|6630|Pan|#7a8a3a",
+    "G|6710|Pear Green|#b0c840",
+    "G|6720|Lost Island|#7ab050",
+    "G|6725|Troops|#6a7a4a",
+    "G|6730|Toad|#5a8a2a",
+    "N|6610|Bamboo|#c8c07a",
+    "N|6620|Hemp|#9a9a5a",
+    "N|6905|Face|#d0a888",
+    "N|6910|Hannibal|#6a6a4a",
+    "N|6920|Murdock|#8a7a58",
+    "N|8000|Ivory|#ece6d0",
+    "N|8010|Sand|#d8c8a0",
+    "N|8020|Beige|#cdb78a",
+    "N|8030|Iced Coffee|#c4a484",
+    "N|8040|Cremino|#d8b890",
+    "N|8050|Frappé|#b89870",
+    "N|8060|Chocolate|#5a3a28",
+    "N|8070|Jawa|#8a6a48",
+    "N|8080|Rust|#a8481f",
+    "N|8110|Arabian|#b88a4a",
+    "N|8120|Gobi|#c8a468",
+    "N|8130|Syrian|#a87a44",
+    "N|8210|After|#7a5a3a",
+    "N|8220|Snail|#98785a",
+    "N|8240|Falling|#9a5a2a",
+    "N|8250|Candy Bar|#6a3a22",
+    "N|8260|Mud|#4a3322",
+    "S|6510|Fog|#b8c0b8",
+    "S|6520|Mist|#98a8a0",
+    "S|6530|Storm|#6a7a7a",
+    "S|6930|B.A. Bosko|#3a3a38",
+    "S|7010|Jaws|#b0b4b8",
+    "S|7030|Mouse|#8a9094",
+    "S|7050|Shark|#5a6064",
+    "S|7070|Rhino|#3a4044",
+    "S|7080|Ant|#28282a",
+    "S|7110|Gambetta|#a8a098",
+    "S|7120|Lennox|#8a8278",
+    "S|7130|Lambrate|#6a645c",
+    "S|7140|Industriilor|#4a4640",
+    "S|7210|Houdini|#b8b0a8",
+    "S|7220|Morpheus|#8a8484",
+    "S|7230|Nostradamus|#5a5456",
+    "S|7320|Ghetto|#686868",
+    "S|7340|Dumbo|#9a9aa0",
+    "S|7360|Slate|#4a5058",
+    "W|9001|Black|#141414",
+    "W|9100|Snow White|#fafafa",
+    "W|9105|White|#eeeeee",
+    "X|P1000|Power Yellow|#ffe600",
+    "X|P2000|Power Orange|#ff7a00",
+    "X|P3000|Power Red|#ff1a1a",
+    "X|P4000|Power Pink|#ff2a9a",
+    "X|P4100|Power Violet|#9a2aff",
+    "X|P5000|Power Blue|#1a6aff",
+    "X|P6000|Power Green|#1aff4a",
+    "X|IN1000|Infra Yellow|#fff04a",
+    "X|IN2000|Infra Orange|#ff9a2a",
+    "X|IN3000|Infra Red|#ff4a4a",
+    "X|IN4000|Infra Pink|#ff7ac8",
+    "X|IN4500|Infra Violet|#b87aff",
+    "X|IN6000|Infra Green|#7aff7a",
+    "X|TR1000|True Yellow|#ffee00",
+    "X|TR1010|50% Tr. Yellow|#fff59a",
+    "X|TR4000|True Magenta|#e6007e",
+    "X|TR4010|50% Tr. Magenta|#f280be",
+    "X|TR5000|True Cyan|#00a8e8",
+    "X|TR5010|50% Tr. Cyan|#80d4f4",
+    "X||Gold Chrome|#d8b04a",
+    "X||Copper Chrome|#b8703c",
+    "X||Silver Chrome|#c4c8cc",
+    "X||Outline Silver|#aab0b6",
+    "B|6110|Tiffany|#81d8d0",
+    "G|6080|Mescaline|#a9d13e"];
   function slug(s) { return "c-" + s.toLowerCase().replace(/[^a-z0-9]+/g, "-"); }
   var BASE = RAW.map(function (r) {
     var p = r.split("|");
@@ -289,7 +462,7 @@ footer { margin-top: 20px; color: var(--muted); font-size: 12.5px; display: flex
   });
 
   var LS = "montana-black-lager-v1";
-  var lagers = [{ id: "l1", name: "Hauptlager", cans: {"9001": [100, 100], "2093": [25]} }], active = "l1", stock = lagers[0].cans, custom = [];
+  var lagers = [{ id: "l1", name: "Hauptlager", cans: {"9001": [100, 100], "2093": [25]} }], active = "l1", stock = lagers[0].cans, custom = [], tints = {};
   var view = "mine", fam = "all", query = "", open = null;
   var dbDoc = null, ver = 0, saving = false, dirty = false, timer = null;
   var sh = null, ls = null;
@@ -312,15 +485,18 @@ footer { margin-top: 20px; color: var(--muted); font-size: 12.5px; display: flex
     }
     if (!l2.length) l2 = [{ id: "l1", name: "Hauptlager", cans: {} }];
     lagers = l2; custom = Array.isArray(o.custom) ? o.custom : [];
+    tints = {};
+    if (o.tints && typeof o.tints === "object") Object.keys(o.tints).forEach(function (k) { if (/^#[0-9a-f]{6}$/i.test(String(o.tints[k]))) tints[k] = o.tints[k]; });
     var a = lagers.filter(function (l) { return l.id === o.active; })[0] || lagers[0];
     active = a.id; stock = a.cans;
   }
-  function state() { return { lagers: lagers, active: active, custom: custom }; }
+  function state() { return { lagers: lagers, active: active, custom: custom, tints: tints }; }
   function cur() { return lagers.filter(function (l) { return l.id === active; })[0] || lagers[0]; }
   try { loadState(JSON.parse(localStorage.getItem(LS) || "null")); } catch (e) {}
 
   function all() {
-    return BASE.concat(custom.map(function (c) { return { id: c.id, fam: "X", code: c.code || "", name: c.name, hex: c.hex, custom: true }; }));
+    return BASE.map(function (c) { return tints[c.id] ? { id: c.id, fam: c.fam, code: c.code, name: c.name, hex: tints[c.id] } : c; })
+      .concat(custom.map(function (c) { return { id: c.id, fam: "X", code: c.code || "", name: c.name, hex: tints[c.id] || c.hex, custom: true }; }));
   }
   function byId(id) { var a = all(); for (var i = 0; i < a.length; i++) if (a[i].id === id) return a[i]; return null; }
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -398,6 +574,8 @@ footer { margin-top: 20px; color: var(--muted); font-size: 12.5px; display: flex
         h += '<button type="button" class="chip" data-edit="' + esc(c.id) + '" data-i="' + i + '" aria-label="Dose bearbeiten, ' + pl(l) + '">' + canHtml(l, c.hex) + pl(l) + '</button>';
       });
       h += '<button type="button" class="chip add" data-newfor="' + esc(c.id) + '">+ Dose</button>';
+      h += '<label class="chip tint">Farbton <input type="color" value="' + esc(c.hex) + '" data-tint="' + esc(c.id) + '" aria-label="Farbton ändern"></label>';
+      if (tints[c.id]) h += '<button type="button" class="chip" data-tintreset="' + esc(c.id) + '">Original</button>';
       if (c.custom) h += '<button type="button" class="chip" data-rmcustom="' + esc(c.id) + '">Farbe löschen</button>';
       h += '</div>';
     }
@@ -622,6 +800,7 @@ footer { margin-top: 20px; color: var(--muted); font-size: 12.5px; display: flex
     if (id === "lsDel") { ls.confirm = true; return renderLActions(); }
     if (id === "lsDel2") return deleteLager();
     if (d.lager) return setActive(d.lager);
+    if (d.tintreset) { delete tints[d.tintreset]; persist(); return render(); }
     if (id === "minus") return setLevel((sh ? sh.level : 0) - 5);
     if (id === "plus") return setLevel((sh ? sh.level : 0) + 5);
     if (id === "cta") return commit();
@@ -638,6 +817,10 @@ footer { margin-top: 20px; color: var(--muted); font-size: 12.5px; display: flex
       lagers.forEach(function (l) { delete l.cans[d.rmcustom]; });
       open = null; persist(); return render();
     }
+  });
+  document.addEventListener("change", function (e) {
+    var t = e.target;
+    if (t && t.dataset && t.dataset.tint && /^#[0-9a-f]{6}$/i.test(t.value)) { tints[t.dataset.tint] = t.value; persist(); render(); }
   });
   $("scrim").addEventListener("click", closeSheet);
   document.addEventListener("keydown", function (e) {
